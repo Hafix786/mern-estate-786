@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux"; 
-import { signInStart, signInSuccess, signInFailure } from "../app/user/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../app/user/userSlice.js";
+import OAuth from "../components/OAuth.jsx";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const {loading, error} = useSelector((state) => state.user)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const { loading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   };
 
@@ -29,18 +34,18 @@ const SignIn = () => {
       });
       const data = await res.json();
       if (data.success === false) {
-        dispatch(signInFailure(data.message))
+        dispatch(signInFailure(data.message));
         return;
       }
-      dispatch(signInSuccess(data))
-      navigate('/')
+      dispatch(signInSuccess(data));
+      navigate("/");
     } catch (error) {
-      dispatch(signInFailure(error.message))
+      dispatch(signInFailure(error.message));
     }
   };
 
   return (
-    <div className="p-3 mx-auto w-full max-w-lg">
+    <div className="p-3 mx-auto max-w-lg">
       <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
@@ -65,7 +70,9 @@ const SignIn = () => {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <OAuth />
       </form>
+
       <p className="mt-3 ">
         Dont have an Account?
         <Link to={"/sign-up"}>

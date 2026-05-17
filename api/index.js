@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv/config"
+import webhookRouter from './routers/webhook.route.js'; // Adjust path to your router
 
 import dns from 'dns' 
 dns.setServers(["1.1.1.1", "8.8.8.8"])
@@ -25,6 +26,7 @@ app.listen(3000, () => {
 
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/webhooks', webhookRouter);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500
